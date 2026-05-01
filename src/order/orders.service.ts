@@ -57,34 +57,20 @@ export class OrdersService {
       throw new InternalServerErrorException('Invalid data.');
     }
 
-    const queryRunner = this.dataSource.createQueryRunner();
+    const order = await this.orderRepository.save({
+      product_id: input.product_id,
+      email: input.email,
+      status: OrderStatus.PENDING,
+    });
 
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const job = await this.orderQueue.add(
+      'flash-sale',
+      { ...input, order_id: order.id },
+      // This will ensure to handle 1 job per user + product at a time
+      { jobId: `${input.email}-${input.product_id}-${input.flash_sale_id}` },
+    );
 
-    try {
-      const order = await queryRunner.manager.save(Order, {
-        product_id: input.product_id,
-        email: input.email,
-        status: OrderStatus.PENDING,
-      });
-
-      await queryRunner.commitTransaction();
-
-      const job = await this.orderQueue.add(
-        'flash-sale',
-        { ...input, order_id: order.id },
-        // This will ensure to handle 1 job per user + product at a time
-        { jobId: `${input.email}-${input.product_id}-${input.flash_sale_id}` },
-      );
-
-      return job.id;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
+    return job.id;
   }
 
   public async processFlashSaleOrder(

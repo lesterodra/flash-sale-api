@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { databaseFactory } from './database';
 import { BullModule } from '@nestjs/bullmq';
+import { JobsModule } from './job/job.module';
 
 const isTest = process.env.NODE_ENV === 'test';
 
@@ -29,6 +30,7 @@ const isTest = process.env.NODE_ENV === 'test';
             }),
             inject: [ConfigService],
           }),
+          JobsModule,
         ]
       : []),
     FlashSalesModule,

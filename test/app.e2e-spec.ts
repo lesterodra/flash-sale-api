@@ -35,6 +35,7 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
+      providers: [],
     })
       // mock queue
       .overrideProvider(getQueueToken(ORDER_QUEUE_NAME))
@@ -73,7 +74,6 @@ describe('AppController (e2e)', () => {
   });
 
   it('/orders (POST) - will create order request for the specific item and user.', async () => {
-    mockQueue.add.mockResolvedValue({ id: 'sample@sample.com-1-1' });
     const mockFlashSaleValue = {
       id: 1,
       product_id: 1,
@@ -86,7 +86,9 @@ describe('AppController (e2e)', () => {
     mockFlashSaleRepository.findOneOrFail.mockResolvedValueOnce(
       mockFlashSaleValue,
     );
+    mockQueue.add.mockResolvedValue({ id: 'sample@sample.com-1-1' });
     mockOrderRespository.countBy.mockResolvedValueOnce(0);
+    mockOrderRespository.save.mockResolvedValueOnce({ id: 1 });
 
     await request(app.getHttpServer())
       .post('/orders')
