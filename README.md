@@ -3,7 +3,7 @@
 ## Description
 
 A rest api to process flash sale orders of the client application. This project was build using nestjs.
-BullMQ and Redis are used here to handle the the load of multiple users trying to purchase the item.
+BullMQ and Redis are used here to handle the load of multiple users trying to purchase the item.
 
 The are some system limitation that need to note here.
 
