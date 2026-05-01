@@ -1,4 +1,4 @@
-Flash Sale API
+# Flash Sale API
 
 ## Description
 
@@ -49,7 +49,7 @@ $ npm run start:prod
 # unit tests
 $ npm run test:unit
 
-# e2e tests
+# integration tests
 $ npm run test:e2e
 
 # run stress test

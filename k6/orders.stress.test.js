@@ -1,6 +1,5 @@
 import http from 'k6/http';
 import { Counter } from 'k6/metrics';
-import { check } from 'k6';
 
 export const options = {
   stages: [
@@ -33,6 +32,7 @@ export default function () {
     // Over selling is being handled in the job processor as well so we don't worry about it here.
     success.add(1);
   } else if (res.status === 409 || res.status === 400) {
+    // This is expected error when the flash sale product is already out of stock
     outOfStock.add(1);
   } else if (res.status >= 500) {
     systemError.add(1);
