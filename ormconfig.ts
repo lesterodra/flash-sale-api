@@ -1,4 +1,7 @@
 import 'dotenv/config';
+import { FlashSale } from 'src/flashSale/flashSale.entity';
+import { Order } from 'src/order/order.entity';
+import { Product } from 'src/product/product.entity';
 import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({
@@ -9,4 +12,5 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   migrations: ['./migrations/*.ts'],
+  entities: [Order, Product, FlashSale],
 });
