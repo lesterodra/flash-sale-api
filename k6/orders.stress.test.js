@@ -14,12 +14,18 @@ export let outOfStock = new Counter('out_of_stock');
 export let systemError = new Counter('system_error');
 
 export default function () {
+  // To get the product_id and the flash_sale_id
+  // call this api http://localhost:3000/flash-sales
+  // from the api response the ff. data:
+  // 1. id = flash_sale_id
+  // 2. product_id / product.id = product_id
+
   const res = http.post(
     'http://localhost:3000/orders',
     JSON.stringify({
-      product_id: 1,
+      product_id: 1, // TODO: Update this value base on the DB inserted data
       email: `user${__VU}@test.com`,
-      flash_sale_id: 1,
+      flash_sale_id: 1, // TODO: Update this value base on the DB inserted data
     }),
     {
       headers: { 'Content-Type': 'application/json' },

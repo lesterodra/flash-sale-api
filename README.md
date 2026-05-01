@@ -83,6 +83,7 @@ $ npm run test:e2e
 
 # run stress test
 # stress test needs your actual database data. Better to initialize the db data again before running this.
+# before running this test, please make sure to open this file k6\orders.stress.test.js then follow the TODOs.
 $ npm run test:stress
 ```
 
