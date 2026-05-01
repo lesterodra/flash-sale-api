@@ -10,7 +10,7 @@ import { DataSource, In, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { CreateOrder } from './order.dto';
 import { ORDER_QUEUE_NAME } from 'src/constants';
-import { FlashSale } from 'src/flashSale/flashSale.entity';
+import { FlashSale, FlashSaleStatus } from 'src/flashSale/flashSale.entity';
 import { Product } from 'src/product/product.entity';
 
 @Injectable()
@@ -29,6 +29,15 @@ export class OrdersService {
   public async addToOrderQueue(
     input: CreateOrder,
   ): Promise<string | undefined> {
+    const flashSale = await this.flashSaleRepository.findOneOrFail({
+      where: { id: input.flash_sale_id },
+      relations: ['product'],
+    });
+
+    if (flashSale.status === FlashSaleStatus.ENDED) {
+      throw new BadRequestException('Flash sale is already ended.');
+    }
+
     // User can only buy 1 product
     const existingOrderCount = await this.orderRepository.countBy({
       email: input.email,
@@ -38,11 +47,6 @@ export class OrdersService {
     if (existingOrderCount) {
       throw new BadRequestException('You can only order 1');
     }
-
-    const flashSale = await this.flashSaleRepository.findOneOrFail({
-      where: { id: input.flash_sale_id },
-      relations: ['product'],
-    });
 
     // Initial check before sending the job to the queue
     if (flashSale.sale_quantity < 1) {

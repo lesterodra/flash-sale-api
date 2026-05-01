@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-enum FlashSaleStatus {
+export enum FlashSaleStatus {
   UPCOMING = 'UPCOMING',
   ACTIVE = 'ACTIVE',
   ENDED = 'ENDED',
