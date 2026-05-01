@@ -2,7 +2,30 @@
 
 ## Description
 
-A rest api to process flash sale orders of the client application.
+A rest api to process flash sale orders of the client application. This project was build using nestjs.
+
+## System diagram
+
+```mermaid
+flowchart LR
+
+Client[Client Web App] --> API[NestJS Api]
+
+API --> OR[Order Module]
+
+OR --> API
+
+OR --> Q[BullMQ queue]
+
+Q --> W[Worker]
+
+W --> DB[Database]
+
+API --> FS[Flash Sale Module]
+FS --> DB
+FS --> API
+
+```
 
 ## Project setup
 
