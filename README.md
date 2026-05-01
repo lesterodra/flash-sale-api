@@ -82,7 +82,7 @@ $ npm run test:unit
 $ npm run test:e2e
 
 # run stress test
-# stress test needs to your actual database data.
+# stress test needs your actual database data. Better to initialize the db data again before running this.
 $ npm run test:stress
 ```
 
