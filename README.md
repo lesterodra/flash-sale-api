@@ -11,19 +11,19 @@ flowchart LR
 
 Client[Client Web App] --> API[NestJS Api]
 
+API --> FS[Flash Sale Module]
+FS --> DB
+FS --> API
+
 API --> OR[Order Module]
 
 OR --> API
 
-OR --> Q[BullMQ queue]
+OR --> Q[BullMQ queue - Redis]
 
-Q --> W[Worker]
+Q --> W[Worker / Processor]
 
 W --> DB[Database]
-
-API --> FS[Flash Sale Module]
-FS --> DB
-FS --> API
 
 ```
 
