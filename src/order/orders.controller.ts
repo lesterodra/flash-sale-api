@@ -12,6 +12,7 @@ export class OrdersController {
 
   @Post()
   async purchase(
+    // TODO: Add body validation here.
     @Body() createOrderInput: CreateOrder,
   ): Promise<QueueAddedResponse> {
     const jobId = await this.ordersService.addToOrderQueue(createOrderInput);
